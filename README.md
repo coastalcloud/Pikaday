@@ -1,3 +1,46 @@
+This is what I've used for a DatePicker many times in SF. A static resource ready zip is under Releases. It's called PikadayPlus -- plus being because it contains a js file for currency fields and moment.js - asprin for the headache that is dates. 
+
+### Usage
+
+```
+<link rel="stylesheet" href="{!URLFOR($Resource.PikadayPlus, '/pikaday/css/pikaday.css')}" />
+
+// DOM example
+<apex:inputField styleClass="datepicks" value="{!Opportunity.ClosedDate}"  />
+
+// Add moment and pikaday
+<script src="{!URLFOR($Resource.PikadayPlus, '/moment/moment.js')}" />
+<script src="{!URLFOR($Resource.PikadayPlus, '/pikaday/pikaday.js')}" />
+
+<script >
+  'use strict()'
+    
+    // If need be, remove SF dates from UI
+    Array.from(document.querySelectorAll('.dateFormat')).forEach(el => 
+        el.parentElement.removeChild(el) )
+     
+    // Overwrite if DatePicker is being injected by default for clear indication
+    if(DatePicker == "function"){
+        DatePicker = () => console.log('using pikaday')
+    }
+    
+    // Use pikaday
+    Array.from(document.querySelectorAll('.datepicks')).forEach(el => {
+        new Pikaday({
+            field: el,
+            format: 'M/D/YYYY'
+        })
+        if(el.value){
+            el.value = moment(el.value).format('M/D/YYYY')
+        }
+        el.onfocus = () => {}
+    })
+</script>
+```
+
+On to normal readme.
+
+
 Pikaday
 ========
 
